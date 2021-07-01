@@ -15,6 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        //Show all users here
         $user = User::all();
         foreach ($user as $row) {
             echo $row . "<br>";

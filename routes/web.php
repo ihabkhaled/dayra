@@ -20,7 +20,8 @@ Route::get('/', function () {
 
 
 // Route::resource('invoice', InvoiceController::class);
-Route::resource('user', UserController::class);
+// Route::resource('user', UserController::class);
 
 Route::post('/invoice/create', [InvoiceController::class, 'create']);
 Route::post('/user/create', [UserController::class, 'create']);
+Route::get('/user', [UserController::class, 'index']);

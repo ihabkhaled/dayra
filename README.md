@@ -1,7 +1,10 @@
 //Install first time
 composer install
+//create db if not exists
 php artisan dayra:createdb
+//run migrations
 php artisan migrate
+//run seeder
 php artisan db:seed --class=UsersSeeder
 
 //Modify .env file
@@ -23,27 +26,32 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=ENTER_FROM_ADDRESS
 MAIL_FROM_NAME="Test Dayra"
 
+//run server
 php artisan serve
 
-//For errors
 php artisan key:generate
 php artisan config:cache
 php artisan config:clear
 
 /////////////////////////////////////////////////////////////////////////
-//Creating migrations and controllers
-php artisan make:command dayra_db_create
-php artisan migrate:rollback
 
-php artisan make:migration create_invoices_table
-php artisan make:migration create_users_table
-php artisan make:controller InvoiceController --resource
-php artisan make:controller UserController --resource
+APIs instructions
 
-php artisan make:model User
-php artisan make:model Invoice
+Create User
+http://127.0.0.1:8000/user/create
+Body Keys:
+    Required:
+        email (Should be unique)
+        full_name
+        mobile (Should be unique)
 
-php artisan make:seeder UsersSeeder
-
-php artisan make:mail InvoiceCreated --markdown=emails.invoice.created
-php artisan make:mail UserCreated --markdown=emails.user.created
+Create Invoice
+http://127.0.0.1:8000/invoice/create
+Body Keys:
+    Required:
+        -email (Should match the existing user, If the email matches the user data will be automatically populated regardless to the full_name and mobile sent during the hitting)
+        -amount
+        -invoice_data (yyyy-mm-dd)
+    In case email doesn't match any record the below keys will be mandatory in addition to the above ones:
+        -full_name
+        -mobile (Should be unique)

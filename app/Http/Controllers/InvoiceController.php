@@ -62,7 +62,7 @@ class InvoiceController extends Controller
                 $invoice->save();
 
                 //Send Invoice Email
-                Mail::to("test@email.com")->send(new InvoiceCreated($invoice, $user[0]));
+                Mail::to($email)->send(new InvoiceCreated($invoice, $user[0]));
 
                 return array('status' => 'success', 'msg' => 'Invoice Saved');
             } catch (\Exception $e) {
@@ -98,7 +98,7 @@ class InvoiceController extends Controller
                 $userModel->save();
 
                 //Send Registeration Email
-                Mail::to("test@email.com")->send(new UserCreated($userModel));
+                Mail::to($userModel->email)->send(new UserCreated($userModel));
 
                 //get the inserted id of the user
                 $user_id = $userModel->id;
@@ -111,7 +111,7 @@ class InvoiceController extends Controller
                 $invoice->save();
 
                 //Send Invoice Email
-                Mail::to("test@email.com")->send(new InvoiceCreated($invoice, $userModel));
+                Mail::to($userModel->email)->send(new InvoiceCreated($invoice, $userModel));
                 return array('status' => 'success', 'msg' => 'User and Invoice are saved');
             } catch (\Exception $e) {
                 return $e->getMessage();

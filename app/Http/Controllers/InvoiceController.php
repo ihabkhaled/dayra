@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Invoice;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Mail\InvoiceCreated;
+use App\Mail\UserCreated;
+use Mail;
 
 class InvoiceController extends Controller
 {
@@ -58,6 +61,9 @@ class InvoiceController extends Controller
                 $invoice->created_at = $created_at;
                 $invoice->save();
 
+                //Send Invoice Email
+                Mail::to("test@email.com")->send(new InvoiceCreated($invoice, $user[0]));
+
                 return array('status' => 'success', 'msg' => 'Invoice Saved');
             } catch (\Exception $e) {
                 return $e->getMessage();
@@ -90,6 +96,10 @@ class InvoiceController extends Controller
                 $userModel->mobile = $mobile;
                 $userModel->created_at = Carbon::now();
                 $userModel->save();
+
+                //Send Registeration Email
+                Mail::to("test@email.com")->send(new UserCreated($userModel));
+
                 //get the inserted id of the user
                 $user_id = $userModel->id;
 
@@ -99,6 +109,9 @@ class InvoiceController extends Controller
                 $invoice->invoice_date = $invoice_date;
                 $invoice->created_at = $created_at;
                 $invoice->save();
+
+                //Send Invoice Email
+                Mail::to("test@email.com")->send(new InvoiceCreated($invoice, $userModel));
                 return array('status' => 'success', 'msg' => 'User and Invoice are saved');
             } catch (\Exception $e) {
                 return $e->getMessage();
